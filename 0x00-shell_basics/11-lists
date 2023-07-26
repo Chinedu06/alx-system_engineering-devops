@@ -1,2 +1,2 @@
 #!/bin/bash
-{ ls -la; pushd .. > /dev/null; ls -la; popd > /dev/null; ls -la /boot; }
+find . /.. /boot -maxdepth 1 -ls
