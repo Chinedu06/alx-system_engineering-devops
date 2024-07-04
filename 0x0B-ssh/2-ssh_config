@@ -1,2 +1,6 @@
-ssh my-server
+# This is the SSH client configuration file
+
+Host *
+    IdentityFile ~/.ssh/school
+    PasswordAuthentication no
 
