@@ -1,23 +1,16 @@
 # 100-puppet_ssh_config.pp
 # This Puppet manifest ensures the SSH client configuration is set to use the private key ~/.ssh/school
-# and disables password authentication.
-
-file { '/home/ubuntu/.ssh/config':
-  ensure  => file,
-  owner   => 'ubuntu',
-  group   => 'ubuntu',
-  mode    => '0600',
-}
+# and disables password authentication in the /etc/ssh/ssh_config file.
 
 file_line { 'Ensure Host *':
-  path  => '/home/ubuntu/.ssh/config',
+  path  => '/etc/ssh/ssh_config',
   line  => 'Host *',
   match => '^Host \*',
   ensure => present,
 }
 
 file_line { 'Declare identity file':
-  path  => '/home/ubuntu/.ssh/config',
+  path  => '/etc/ssh/ssh_config',
   line  => '    IdentityFile ~/.ssh/school',
   match => '^\s*IdentityFile ',
   ensure => present,
@@ -25,7 +18,7 @@ file_line { 'Declare identity file':
 }
 
 file_line { 'Turn off password auth':
-  path  => '/home/ubuntu/.ssh/config',
+  path  => '/etc/ssh/ssh_config',
   line  => '    PasswordAuthentication no',
   match => '^\s*PasswordAuthentication ',
   ensure => present,
