@@ -1,0 +1,20 @@
+#!/bin/bash
+# This script configures the firewall to:
+# - Allow TCP connections on ports 22/SSH, 80/HTTP, and 443/HTTPS
+# - Deny all other connections
+
+# Reset UFW to default settings
+sudo ufw reset
+
+# Allow necessary ports
+sudo ufw allow 22/tcp
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+
+# Deny all other connections
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+
+# Enable UFW
+sudo ufw enable
+
