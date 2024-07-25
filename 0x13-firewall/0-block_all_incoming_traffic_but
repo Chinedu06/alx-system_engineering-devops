@@ -1,19 +1,23 @@
 #!/bin/bash
+# This script configures the firewall to:
+# - Allow TCP connections on ports 22/SSH, 80/HTTP, and 443/HTTPS
+# - Forward port 8080/TCP to port 80/TCP
+# - Deny all other connections
 
-# Reset ufw to default settings
-sudo ufw reset
-
-# Allow SSH (port 22)
+# Allow necessary ports
 sudo ufw allow 22/tcp
-
-# Allow HTTP (port 80)
 sudo ufw allow 80/tcp
-
-# Allow HTTPS (port 443)
 sudo ufw allow 443/tcp
 
-# Enable ufw
+# Forward port 8080 to 80
+sudo ufw allow 8080/tcp
+sudo ufw route allow proto tcp from any to any port 8080
+sudo iptables -t nat -A PREROUTING -p tcp --dport 8080 -j REDIRECT --to-port 80
+
+# Deny all other ports
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+
+# Enable UFW if not enabled
 sudo ufw enable
 
-# Show ufw status
-sudo ufw status
