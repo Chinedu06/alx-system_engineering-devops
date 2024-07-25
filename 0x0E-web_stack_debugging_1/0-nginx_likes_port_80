@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# Configures an Ubuntu server to ensure Nginx is running and listening on port 80
+
+# Update the package lists
+apt-get update
+
+# Install Nginx if it is not installed
+apt-get install -y nginx
+
+# Ensure Nginx is enabled and will start on boot
+if ! grep -q "nginx" /etc/rc.local; then
+    sed -i '$i /usr/sbin/nginx\n' /etc/rc.local
+fi
+
+# Start Nginx service
+service nginx start
+
+# Configure Nginx to listen on port 80
+sed -i 's/listen 80 default_server;/listen 80;/g' /etc/nginx/sites-available/default
+sed -i 's/listen \[::\]:80 default_server;/listen [::]:80;/g' /etc/nginx/sites-available/default
+
+# Restart Nginx to apply changes
+service nginx restart
+
