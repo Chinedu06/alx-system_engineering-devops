@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# Run the whoami command as the specified user
+
+if [ $# -ne 1 ]; then
+    echo "Usage: $0 <username>"
+    exit 1
+fi
+
+USER="$1"
+
+if id "$USER" &>/dev/null; then
+    SHELL=$(grep "^$USER:" /etc/passwd | cut -d: -f7)
+    if [ "$SHELL" = "/usr/sbin/nologin" ] || [ "$SHELL" = "/bin/false" ]; then
+        echo "User $USER exists but cannot log in."
+        exit 1
+    else
+        su -c "whoami" "$USER"
+    fi
+else
+    echo "User $USER does not exist."
+    exit 1
+fi
+
