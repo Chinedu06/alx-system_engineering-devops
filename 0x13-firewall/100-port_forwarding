@@ -1,11 +1,23 @@
 #!/bin/bash
 # This script configures the firewall to forward port 8080/TCP to port 80/TCP on web-01.
 
-# Add a rule to forward port 8080 to 80
-sudo ufw allow 8080/tcp
-sudo ufw route allow proto tcp from any to any port 8080
-sudo iptables -t nat -A PREROUTING -p tcp --dport 8080 -j REDIRECT --to-port 80
-
 # Enable UFW if not enabled
 sudo ufw enable
+
+# Allow necessary ports
+sudo ufw allow 80/tcp
+sudo ufw allow 8080/tcp
+
+# Setup port forwarding
+sudo iptables -t nat -A PREROUTING -p tcp --dport 8080 -j REDIRECT --to-port 80
+sudo iptables -t nat -A POSTROUTING -p tcp --dport 80 -j MASQUERADE
+
+# Save the iptables rules
+sudo sh -c "iptables-save > /etc/iptables/rules.v4"
+
+# Enable UFW routing (if not already enabled)
+sudo ufw route allow proto tcp from any to any port 8080
+
+# Reload UFW to apply changes
+sudo ufw reload
 
