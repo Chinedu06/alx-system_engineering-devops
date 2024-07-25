@@ -15,6 +15,6 @@ sudo ufw allow 443/tcp
 sudo ufw default deny incoming
 sudo ufw default allow outgoing
 
-# Enable UFW if not enabled
+# Enable UFW
 sudo ufw enable
 
