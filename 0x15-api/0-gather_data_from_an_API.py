@@ -41,4 +41,3 @@ if __name__ == "__main__":
     print(f"Employee {employee_name} is done with tasks({dn_tasks}/{tl_tk}):")
     for task in cmp_tasks:
         print(f"\t {task}")
-
